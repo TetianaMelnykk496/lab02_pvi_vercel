@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="preload" href="style.css" as="style">
+    <link rel="package" href="manifest.json">
+    <meta name="theme-color" content="#7a7f80">
+    <title>Lab01</title>
+    <style>
+        *{
+            text-decoration: none;
+        }
+        .navbar2{
+            background: #7a7f80 ;
+        }
+    </style>
+    <script src="router.js" defer></script>
+</head>
+<body>
+<header>
+
+<nav class="navbar-top">
+    <div class="dots">
+        <div></div><div></div><div></div>
+    </div>
+   <div class="website-search">
+       <input type="text" placeholder="yourwebsitename.com" aria-label="Search">
+   </div>
+</nav>
+
+<nav class="navbar2">
+    <a href="#students" class="cms">
+        <h1>CMS</h1>
+    </a>
+    <ul>
+        <li class="notif-dropdown bell-container">
+            <a href="#messages">
+                <i class="fa-regular fa-bell"></i>
+                <span class="notif-indicator">10</span>
+            </a>
+
+            <div class="notif-dropdown-content">
+                <ul>
+                    <li class="notif-user">
+                        <div class="user"><i class="fa-regular fa-circle-user"></i>
+                            <span>Admin</span>
+                        </div>
+                        <div class="notif-message"></div>
+                    </li>
+
+                    <li class="notif-user">
+                        <div class="user"><i class="fa-regular fa-circle-user"></i>
+                            <span>John</span>
+                        </div>
+                        <div class="notif-message"></div>
+                    </li>
+
+                    <li class="notif-user">
+                        <div class="user"><i class="fa-regular fa-circle-user"></i>
+                            <span>Anna </span>
+                        </div>
+                        <div class="notif-message"></div>
+                    </li>
+                </ul>
+            </div>
+
+        </li>
+
+        <li class="profile-dropdown"><a href="#"><i class="fa-regular fa-circle-user"></i>Melnyk Tetiana</a>
+        <div class="profile-content-dropdown">
+            <a href="#"> Profile </a>
+            <a href="#"> Log out </a>
+        </div>
+       </li>
+    </ul>
+</nav>
+</header>
+
+<main class="main-container" style="display:flex">
+
+    <input type="checkbox" id="burg-menu">
+    <label for="burg-menu" class="burger-btn">
+        <i class="fa-solid fa-bars"></i>
+        <span style="display:none">Burg menu</span>
+    </label>
+
+    <div class="menu">
+    <ul>
+        <li ><a href="#dashboard">Dashboard</a></li>
+        <li ><a href="#students">Students</a></li>
+        <li ><a href="#tasks">Tasks</a></li>
+    </ul>
+</div>
+
+
+<div class="content" id="main-content" style="flex-grow: 1">
+
+    <!-----------------------------    Students page---------------------------------------------->
+    <section id="students" class="page-section">
+        <div class="student-page-top">
+        <h2 class="student-page-title">Students </h2>
+        <a href="#student-modal" class="add-btn btn" aria-label="Add Student">
+            <i class="fa-solid fa-plus"></i>
+        </a>
+</div>
+
+        <div class="table-wrap">
+<table class="students-table">
+    <thead>
+    <tr>
+        <th><input type="checkbox" id="select-all" class="all-checkbox" aria-label="Select all"><span style="display:none">Select</span></th>
+        <th>Group</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Birthday</th>
+        <th>Status</th>
+        <th>Options</th>
+    </tr>
+    </thead>
+    <tbody id="students-body-table">
+    <tr>
+        <td><input type="checkbox" class="row-checkbox" aria-label="Select student"></td>
+        <td>KN-21</td>
+        <td>Tetiana Melnyk</td>
+        <td>F</td>
+        <td>23.06.2007</td>
+        <td><span class="student-status online "></span></td>
+        <td><a href="#student-modal" class="btn edit-btn" aria-label="Edit student"><i class="fa-regular fa-pen-to-square"></i></a>
+            <a href="#delete-warn-btn" class="delete-btn btn" aria-label="Delete student"><i class="fa-solid fa-xmark"></i></a>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+</div>
+        <div class="buttons-change">
+            <button class="opt-buttons-change">&lt; </button>
+            <button class="opt-buttons-change">1 </button>
+            <button class="opt-buttons-change">2 </button>
+            <button class="opt-buttons-change">3 </button>
+            <button class="opt-buttons-change">&gt; </button>
+        </div>
+    </section>
+    <!--------------------------    Tasks page------------------->
+    <section id="tasks" class="page-section">
+        <h2>Tasks</h2>
+
+    </section>
+<section id="dashboard" class="page-section">
+    <div class="right-menu">
+        <div class="buttons-graph">
+            <div class="buttons-day-month">
+                <div class="button-graph-day">
+                    <span>Day</span></div>
+                <div class="button-graph-dm">
+                    <span>Month</span> </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="student-graph-title">Students</h2>
+
+<div class="infos">
+    <h3>
+        Informations
+    </h3>
+      <h3>
+          27.02 - Beginning of studies<br>
+          10.03 - Task #1<br>
+          20.03 - Task #2<br>
+          30.03 - Task #3<br>
+          15.04 - Task #4<br>
+          30.05 - Completion of studies
+      </h3>
+</div>
+<div class="tasks">
+    <h2>
+        Tasks
+    </h2>
+    <h3>
+        Introductory information - Done<br>
+        Task #1 - <span style="color:DarkRed;">In process</span><br>
+        Task #2 - <span style="color:#D3D3D3">To Do</span><br>
+        Task #3 - <span style="color:#D3D3D3">To Do</span><br>
+        Task #4 - <span style="color:#D3D3D3">To Do</span>
+    </h3>
+</div>
+<div class="notif">
+    <h2>Notifications</h2>
+    <ul>
+        <li class="notif-user">
+         <div class="user"><i class="fa-regular fa-circle-user"></i>
+            <span>Admin</span>
+         </div>
+        <div class="notif-message"></div>
+        </li>
+
+        <li class="notif-user">
+            <div class="user"><i class="fa-regular fa-circle-user"></i>
+                <span>John</span>
+            </div>
+            <div class="notif-message"></div>
+        </li>
+
+        <li class="notif-user">
+            <div class="user"><i class="fa-regular fa-circle-user"></i>
+                <span>Anna K.</span>
+            </div>
+            <div class="notif-message"></div>
+        </li>
+    </ul>
+</div>
+</section>
+
+</div>
+</main>
+<section id="messages" class="page-section">
+    <h2>Messages</h2>
+</section>
+
+<section id="student-modal" class="modal">
+    <div class="modal-content">
+        <a href="#students" class="close-btn"> Close</a>
+        <h2 id="modal-title">Add student</h2>
+        <input type="hidden" id="student-id">
+        <label for="student-group">Group</label>
+        <select name="Group" id="student-group">
+            <option name="PZ-21">PZ-21</option>
+            <option name="PZ-22">PZ-22</option>
+            <option name="PZ-23">PZ-23</option>
+            <option name="PZ-24">PZ-24</option>
+        </select>
+        <label for="student-first-name">First name</label>
+        <input type="text" id="student-first-name">
+        <label for="student-last-name">Last name</label>
+        <input type="text" id="student-last-name">
+        <label for="student-gender">Gender</label>
+        <select name="Gender" id="student-gender">
+            <option name="Female">Female</option>
+            <option name="Male">Male</option>
+            <option name="Other">Other</option>
+        </select>
+        <label for="student-birthday">Birthday</label>
+        <input type="date" id="student-birthday">
+
+        <div class="modal-btn">
+            <a href="#students">Cancel</a>
+            <a href="#students" id="save-student-btn" class="create-btn" aria-label="Create student">Create</a>
+        </div>
+    </div>
+</section>
+
+<!--<section id="edit-student-modal" class="modal">-->
+<!--    <div class="modal-content">-->
+<!--        <a href="#students" class="close-btn"> Close</a>-->
+<!--        <h2>Edit student</h2>-->
+<!--        <label for="edit-group">Group</label>-->
+<!--        <select name="Group" id="edit-group">-->
+<!--            <option name="PZ-21">PZ-21</option>-->
+<!--            <option name="PZ-22">PZ-22</option>-->
+<!--            <option name="PZ-23">PZ-23</option>-->
+<!--            <option name="PZ-24">PZ-24</option>-->
+<!--        </select>-->
+<!--        <label for="edit-first-name">First name</label>-->
+<!--        <input type="text" id="edit-first-name">-->
+<!--        <label for="edit-last-name">Last name</label>-->
+<!--        <input type="text" id="edit-last-name">-->
+<!--        <label for="edit-gender">Gender</label>-->
+<!--        <select name="Gender" id="edit-gender">-->
+<!--            <option name="Female">Female</option>-->
+<!--            <option name="Male">Male</option>-->
+<!--        </select>-->
+<!--        <label for="edit-birthday">Birthday</label>-->
+<!--        <input type="date" id="edit-birthday">-->
+
+<!--        <div class="modal-btn">-->
+<!--            <a href="#students" aria-label="Cancel">Cancel</a>-->
+<!--            <button id="save-edit-btn" class="create-btn">Save</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+<section id="delete-warn-btn" class="modal">
+ <div class="warn-container">
+<div class="warn-header">
+       <h2>Warning</h2>-->
+        <a href="#students" class="close-btn" aria-label="Close warning"></a>-
+      </div>
+
+<span class="warning-text"></span>
+<div class="warn-btn">
+  <a href="#students" class="cancel-btn">Cancel</a>
+ <a href="#students" class="ok-btn">Ok</a>
+</div>
+   </div>
+</section>
+
+</body>
+</html>

@@ -907,4 +907,33 @@ body:has(#messages:target) .notif-indicator{
         padding: 8px;
         font-size: 10px;
     }
+
+
+}
+
+.modal:target{
+    display: flex;
+    position:fixed;
+    z-index:10000;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter:blur(10px);
+    justify-content: center;
+    align-items: center;
+}
+.invalid-input{
+    border: 1px solid #9f0000 !important;
+    background-color: #ec0000 !important;
+}
+.error-label{
+    color: #9f0000;
+    font-size: 0.8rem;
+    display: block;
+    margin-top:2px;
+}
+.modal-content{
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    width: 80%;
 }

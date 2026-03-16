@@ -1,11 +1,11 @@
 /* jshint esversion: 6 */
 document.addEventListener('DOMContentLoaded', () => {
 
-    if('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/servicework.js')
                 .then(reg => console.log('Service worker has been registered'))
-                .catch(err=>console.log('Service worker has not been registered'));
+                .catch(err => console.log('Service worker has not been registered'));
         })
     }
 
@@ -195,6 +195,12 @@ select_all.addEventListener("change", (event) => {
 });
 
 save_student_btn.addEventListener("click", (event) => {
+    event.preventDefault();
+    const inputs=document.querySelectorAll(".modal-content input, .modal-content select");
+    const labels=document.querySelectorAll(".error-label");
+    inputs.forEach(i => i.classList.remove('invalid-input'));
+    labels.forEach(l => l.textContent='');
+
     const studentData={
         group: document.getElementById("student-group").value,
         first_name: document.getElementById("student-first-name").value,
@@ -203,11 +209,62 @@ save_student_btn.addEventListener("click", (event) => {
         birthday: document.getElementById("student-birthday").value
     };
 
-    if(studentData.first_name === "" || studentData.last_name === "" || studentData.group === "" || studentData.gender === "" || studentData.birthday === ""){
-        alert("Fill all info");
-        event.preventDefault();
-        return;
+    //---------------------
+    let isValid = true;
+
+    // --- ВАЛІДАЦІЯ REGEX ---
+    const nameRegex = /^[A-ZА-ЯІЇЄ][a-zа-яіїє']+$/; // Велика літера, далі маленькі
+    const groupRegex = /^[A-Z]{2}-\d{2}$/;        // Формат PZ-21
+
+    if (!nameRegex.test(studentData.first_name)) {
+        document.getElementById("student-first-name").classList.add('invalid-input');
+        document.getElementById("error-first-name").textContent = "Тільки літери, починаючи з великої";
+        isValid = false;
     }
+
+    if (!groupRegex.test(studentData.group)) {
+        document.getElementById("student-group").classList.add('invalid-input');
+        document.getElementById("error-group").textContent = "Format: AA-11";
+        isValid = false;
+    }
+
+    if (!nameRegex.test(studentData.first_name)) {
+        document.getElementById("student-first-name").classList.add('invalid-input');
+        document.getElementById("error-first-name").textContent = "Invalid name (ex: Ivan)";
+        isValid = false;
+    }
+
+    if (!nameRegex.test(studentData.last_name)) {
+        document.getElementById("student-last-name").classList.add('invalid-input');
+        document.getElementById("error-last-name").textContent = "Invalid last name";
+        isValid = false;
+    }
+
+    // --- ВАЛІДАЦІЯ ДАТИ (16-90 років) ---
+    if (!studentData.birthday) {
+        document.getElementById("student-birthday").classList.add('invalid-input');
+        document.getElementById("error-birthday").textContent = "Enter birthday";
+        isValid = false;
+    } else {
+        const birthDate = new Date(studentData.birthday);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
+
+        if (age < 16 || age > 90) {
+            document.getElementById("student-birthday").classList.add('invalid-input');
+            document.getElementById("error-birthday").textContent = "Age must be 16-90";
+            isValid = false;
+        }
+    }
+
+    if (!isValid) return;
+
+//-----------
+
+
+
 
     console.log("Student json: ", JSON.stringify(studentData));
     const full_name = `${studentData.first_name} ${studentData.last_name}`;

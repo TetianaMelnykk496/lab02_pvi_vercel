@@ -17,7 +17,7 @@
             background: #7a7f80 ;
         }
     </style>
-    <script src="router.js" defer></script>
+    <script src="router.js?v=1.1" defer></script>
 </head>
 <body>
 <header>
@@ -225,6 +225,8 @@
         <a href="#students" class="close-btn"> Close</a>
         <h2 id="modal-title">Add student</h2>
         <input type="hidden" id="student-id">
+
+        <div class="form-group">
         <label for="student-group">Group</label>
         <select name="Group" id="student-group">
             <option name="PZ-21">PZ-21</option>
@@ -232,22 +234,39 @@
             <option name="PZ-23">PZ-23</option>
             <option name="PZ-24">PZ-24</option>
         </select>
-        <label for="student-first-name">First name</label>
-        <input type="text" id="student-first-name">
+        </div>
+
+        <div class="form-group">
+        <label for="student-first-name" >First name</label>
+        <input type="text" id="student-first-name" required>
+            <span class="error-label" id="error-first-name"></span>
+        </div>
+
+        <div class="form-group">
         <label for="student-last-name">Last name</label>
-        <input type="text" id="student-last-name">
+        <input type="text" id="student-last-name" required>
+            <span class="error-label" id="error-last-name"></span>
+</div>
+
+        <div class="form-group">
         <label for="student-gender">Gender</label>
-        <select name="Gender" id="student-gender">
+        <select name="Gender" id="student-gender" required>
             <option name="Female">Female</option>
             <option name="Male">Male</option>
-            <option name="Other">Other</option>
+
         </select>
+            <span class="error-label" id="error-gender"></span>
+            </div>
+
+        <div class="form-group">
         <label for="student-birthday">Birthday</label>
-        <input type="date" id="student-birthday">
+        <input type="date" id="student-birthday" required>
+            <span class="error-label" id="error-birthday"></span>
+        </div>
 
         <div class="modal-btn">
             <a href="#students">Cancel</a>
-            <a href="#students" id="save-student-btn" class="create-btn" aria-label="Create student">Create</a>
+            <button type="button" id="save-student-btn" class="create-btn" aria-label="Create student">Create</button>
         </div>
     </div>
 </section>

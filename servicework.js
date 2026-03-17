@@ -1,6 +1,6 @@
 const CACHE_NAME='cms-cache';
 const ASSETS=[
-
+'/',
     './dashboard.html',
     './style.css',
     './router.js'

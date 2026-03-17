@@ -39,7 +39,7 @@ function clear_form(){
     document.getElementById("student-gender").value = "";
     document.getElementById("student-birthday").value = "";
     document.getElementById("modal-title").textContent = "Add Student";
-    save_student_btn.taxtContent="Save";
+    save_student_btn.textContent="Save";
 }
 
 // add_conf_btn.addEventListener("click", () => {
@@ -290,6 +290,12 @@ save_student_btn.addEventListener("click", (event) => {
     window.location.hash="#students";
 
 });
+    const closeButtons = document.querySelectorAll('.close-btn, .modal-btn a[href="#students"]');
 
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            clear_form();
+        });
+    });
 });
 

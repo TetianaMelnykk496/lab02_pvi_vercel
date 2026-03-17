@@ -40,6 +40,11 @@ function clear_form(){
     document.getElementById("student-birthday").value = "";
     document.getElementById("modal-title").textContent = "Add Student";
     save_student_btn.textContent="Save";
+    const inputs = document.querySelectorAll(".modal-content input, .modal-content select");
+    const labels = document.querySelectorAll(".error-label");
+
+    inputs.forEach(input => input.classList.remove('invalid-input'));
+    labels.forEach(label => label.textContent = '');
 }
 
 // add_conf_btn.addEventListener("click", () => {

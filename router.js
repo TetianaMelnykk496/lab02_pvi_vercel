@@ -209,12 +209,10 @@ save_student_btn.addEventListener("click", (event) => {
         birthday: document.getElementById("student-birthday").value
     };
 
-    //---------------------
     let isValid = true;
 
-    // --- ВАЛІДАЦІЯ REGEX ---
-    const nameRegex = /^[A-ZА-ЯІЇЄ][a-zа-яіїє']+$/; // Велика літера, далі маленькі
-    const groupRegex = /^[A-Z]{2}-\d{2}$/;        // Формат PZ-21
+    const nameRegex = /^[A-ZА-ЯІЇЄ][a-zа-яіїє']+$/;
+    const groupRegex = /^[A-Z]{2}-\d{2}$/;
 
     if (!nameRegex.test(studentData.first_name)) {
         document.getElementById("student-first-name").classList.add('invalid-input');
@@ -230,7 +228,7 @@ save_student_btn.addEventListener("click", (event) => {
 
     if (!nameRegex.test(studentData.first_name)) {
         document.getElementById("student-first-name").classList.add('invalid-input');
-        document.getElementById("error-first-name").textContent = "Invalid name (ex: Ivan)";
+        document.getElementById("error-first-name").textContent = "Invalid name (example: Ivan)";
         isValid = false;
     }
 
@@ -240,7 +238,6 @@ save_student_btn.addEventListener("click", (event) => {
         isValid = false;
     }
 
-    // --- ВАЛІДАЦІЯ ДАТИ (16-90 років) ---
     if (!studentData.birthday) {
         document.getElementById("student-birthday").classList.add('invalid-input');
         document.getElementById("error-birthday").textContent = "Enter birthday";
@@ -260,11 +257,6 @@ save_student_btn.addEventListener("click", (event) => {
     }
 
     if (!isValid) return;
-
-//-----------
-
-
-
 
     console.log("Student json: ", JSON.stringify(studentData));
     const full_name = `${studentData.first_name} ${studentData.last_name}`;
@@ -294,6 +286,7 @@ save_student_btn.addEventListener("click", (event) => {
         cells[4].textContent=studentData.birthday;
         cells[5].innerHTML=`<span class="student-status ${status}"></span>`
     }
+    clear_form();
     window.location.hash="#students";
 
 });

@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
             navigator.serviceWorker.register('/servicework.js')
                 .then(reg => console.log('Service worker has been registered'))
                 .catch(err => console.log('Service worker has not been registered'));
-        })
+        });
     }
 
 
@@ -20,6 +20,60 @@ const student_id= document.getElementById("student-id");
 
 let row_edit=null;
 let row_delete = null;
+
+checkAuthStatus();
+async function checkAuthStatus(){
+    try{
+        const response=await fetch('api/index.php?action=checkAuth');
+        const auth = await response.json();
+        const loginBtn=document.getElementById('login-btn');
+        const authElements=document.querySelector('.auth-only');
+        if(auth.isLoggedIn){
+            if(loginBtn) loginBtn.classList.add('hidden');
+            authElements.forEach(el=> el.classList.remove('hidden'));
+            loadStudentsFromServer();
+        }
+    }
+    catch (e){
+        console.error("Error during log in", e);
+    }
+}
+
+async function loadStudentsFromServer(){
+    try {
+        const response = await fetch('api/index.php?action=getStudents');
+        const students = await response.json();
+        renderTable(students);
+    }
+    catch(e){
+        console.error("Loading students failed",e);
+    }
+}
+
+function renderTable(students){
+    if (!table_body) return;
+    table_body.innerHTML="";
+    students.forEach(student=>{
+        const full_name=`${student.first_name} ${student.last_name}`;
+        const status =get_status(full_name);
+        const row=`
+         <tr data-id="$student.id">
+           <td><input type="checkbox" class="row-checkbox" aria-label="Select all" > </td>
+             <td>${student.group}</td>
+            <td>${full_name}</td>
+          <td>${student.gender}</td>
+             <td>${student.birthday}</td>
+ <td><span class="student-status ${status} "></span></td>
+         <td><a href="#student-modal" class="btn edit-btn" aria-label="Select student" ><i class="fa-regular fa-pen-to-square"></i></a>
+             <a href="#delete-warn-btn" class="delete-btn btn" aria-label="Delete student student"><i class="fa-solid fa-xmark"></i></a>
+         </td>
+         </tr>`;
+
+     table_body.innerHTML +=row;
+    });
+}
+
+
 
 function get_status (full_name){
     const profile_name = "Tetiana Melnyk";
@@ -132,32 +186,20 @@ student_id.value="editing";
     }
 });
 
-delete_ok_btn.addEventListener("click", () => {
-let count =0;
-const selected_checkbox = document.querySelectorAll(".row-checkbox");
-for ( let i=0; i<selected_checkbox.length; i++){
-    if(selected_checkbox[i].checked){
-        count++;
+delete_ok_btn.addEventListener("click", async() => {
+if(row_delete){
+    const studentId = row_delete.getAttribute('data-id');
+    const response = await fetch(`api/index.php?action=deleteStudent&id=${studentId}`, {method: 'DELETE'});
+    const result = await response.json();
+    if (result.success){
+        row_delete.remove();
+        row_delete= null;
+        window.location.hash="#students";
+    }
+    else{
+        alert("Server error" + result.meassage);
     }
 }
-
-    if(row_delete){
-        count++;
-    }
-    if(count===0){
-        document.querySelector(".warning-text").textContent=`Please select students for removal`;
-   return;
-    }
-   for (let i=0; i<selected_checkbox.length; i++){
-       if(selected_checkbox[i].checked){
-           selected_checkbox[i].closest("tr").remove();
-       }
-   }
-
-   if(row_delete){
-       row_delete.remove();
-       row_delete=null;
-   }
 });
 
 // save_edit_btn.addEventListener("click", (event) => {
@@ -199,14 +241,44 @@ select_all.addEventListener("change", (event) => {
     }
 });
 
-save_student_btn.addEventListener("click", (event) => {
-    event.preventDefault();
-    const inputs=document.querySelectorAll(".modal-content input, .modal-content select");
-    const labels=document.querySelectorAll(".error-label");
-    inputs.forEach(i => i.classList.remove('invalid-input'));
-    labels.forEach(l => l.textContent='');
+const loginFormBtn=document.getElementById('submit-login-btn');
+if (loginFormBtn){
+    loginFormBtn.addEventListener('click', async (e)=>{
+        e.preventDefault();
+        const username=document.getElementById('login-username').value;
+        const password=document.getElementById('login-password').value;
+        const response = await fetch ('api/index.php?action=login',{
+            method: 'POST',
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify({username,password})
+        });
+        const result =await response.json();
+        if (result.success){
+            window.location.hash="#students";
+            checkAuthStatus();
+        }
+        else{
+            alert(result.message);
+        }
+    });
+}
 
-    const studentData={
+const logoutBtn = document.getElementById('logout-btn');
+if(logoutBtn){
+    logoutBtn.addEventListener('click', async()=>{
+        await fetch('api/index.php?action=logout');
+        checkAuthStatus();
+    });
+}
+
+save_student_btn.addEventListener("click", async(event) => {
+    event.preventDefault();
+    const inputs = document.querySelectorAll(".modal-content input, .modal-content select");
+    const labels = document.querySelectorAll(".error-label");
+    inputs.forEach(i => i.classList.remove('invalid-input'));
+    labels.forEach(l => l.textContent = '');
+
+    const studentData = {
         group: document.getElementById("student-group").value,
         first_name: document.getElementById("student-first-name").value,
         last_name: document.getElementById("student-last-name").value,
@@ -252,7 +324,9 @@ save_student_btn.addEventListener("click", (event) => {
         const today = new Date();
         let age = today.getFullYear() - birthDate.getFullYear();
         const m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
 
         if (age < 16 || age > 90) {
             document.getElementById("student-birthday").classList.add('invalid-input');
@@ -263,37 +337,35 @@ save_student_btn.addEventListener("click", (event) => {
 
     if (!isValid) return;
 
-    console.log("Student json: ", JSON.stringify(studentData));
-    const full_name = `${studentData.first_name} ${studentData.last_name}`;
-    const gender= studentData.gender;
-    const status=get_status(full_name);
-    if (student_id.value===""){
-        let new_row = `
-        <tr>
-           <td><input type="checkbox" class="row-checkbox" aria-label="Select all" > </td>
-             <td>${studentData.group}</td>
-            <td>${studentData.first_name} ${studentData.last_name}</td>
-          <td>${studentData.gender}</td>
-             <td>${studentData.birthday}</td>
- <td><span class="student-status ${status} "></span></td>
-         <td><a href="#student-modal" class="btn edit-btn" aria-label="Select student" ><i class="fa-regular fa-pen-to-square"></i></a>
-             <a href="#delete-warn-btn" class="delete-btn btn" aria-label="Delete student student"><i class="fa-solid fa-xmark"></i></a>
-         </td>
-         </tr>`;
+    try{
+        const action=(student_id.value === "editing" ? 'editStudent' : 'addStudent');
+        const response = await fetch(`api/index.php?action=${action}`,{
+        method:'POST',
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify(studentData)
+        });
+        const result= await response.json();
 
-     table_body.innerHTML +=new_row;
-    }
-    else if(row_edit){
-        let cells = row_edit.getElementsByTagName("td");
-        cells[1].textContent=studentData.group;
-        cells[2].textContent=full_name;
-        cells[3].textContent=gender;
-        cells[4].textContent=studentData.birthday;
-        cells[5].innerHTML=`<span class="student-status ${status}"></span>`
-    }
-    clear_form();
-    window.location.hash="#students";
 
+    if (result.success) {
+        loadStudentsFromServer();
+        clear_form();
+        window.location.hash = "#students";
+    } else {
+        alert("Error on server side" + result.errors.join(", "));
+        if (result.field_errors) {
+            Object.keys(result.field_errors).forEach(field => {
+                const input = document.getElementById(`student-${field}`);
+                const errorLabel = document.getElementById(`error-${fiels}`);
+                if (input) input.classList.add('invalid-input');
+                if (errorLabel) errorLabel.textContent = result.field_errors[field];
+            });
+        }
+    }}
+catch (error) {
+    console.error("Server mistake");
+    alert("Could not connect with server");
+}
 });
     const closeButtons = document.querySelectorAll('.close-btn, .modal-btn a[href="#students"]');
 

@@ -17,6 +17,10 @@ body{
     padding-top: 10px;
 }
 
+.hidden {
+    display: none !important;
+}
+
 .content{
     flex-grow: 1;
     padding:2rem;

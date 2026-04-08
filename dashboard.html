@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="preload" href="style.css" as="style">
+<link rel="preload" href="assets/style.css" as="style">
     <link rel="package" href="manifest.json">
     <meta name="theme-color" content="#7a7f80">
     <title>Lab01</title>
@@ -17,7 +17,7 @@
             background: #7a7f80 ;
         }
     </style>
-    <script src="router.js?v=1.1" defer></script>
+    <script src="assets/router.js?v=1.1" defer></script>
 </head>
 <body>
 <header>
@@ -36,7 +36,10 @@
         <h1>CMS</h1>
     </a>
     <ul>
-        <li class="notif-dropdown bell-container">
+        <li id="login-item">
+            <a href="#login-modal" class="btn">Log In</a>
+        </li>
+        <li class="notif-dropdown bell-container hidden">
             <a href="#messages">
                 <i class="fa-regular fa-bell"></i>
                 <span class="notif-indicator">10</span>
@@ -69,10 +72,10 @@
 
         </li>
 
-        <li class="profile-dropdown"><a href="#"><i class="fa-regular fa-circle-user"></i>Melnyk Tetiana</a>
+        <li class="profile-dropdown auth-only hidden"><a href="#"><i class="fa-regular fa-circle-user"></i>Melnyk Tetiana</a>
         <div class="profile-content-dropdown">
             <a href="#"> Profile </a>
-            <a href="#"> Log out </a>
+            <a href="#dashboard" id="logout-link" onclick="logout()"> Log out </a>
         </div>
        </li>
     </ul>
@@ -180,7 +183,7 @@
         Tasks
     </h2>
     <h3>
-        Introductory information - Done<br>
+        <br>
         Task #1 - <span style="color:DarkRed;">In process</span><br>
         Task #2 - <span style="color:#D3D3D3">To Do</span><br>
         Task #3 - <span style="color:#D3D3D3">To Do</span><br>
@@ -315,6 +318,26 @@
 </div>
    </div>
 </section>
+
+<section id="login-modal" class="modal">
+    <div class="modal-content">
+        <a href="#dashboard" class="close-btn"> Close</a>
+        <h2>Автентифікація</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-username">Ім'я користувача</label>
+                <input type="text" id="login-username" placeholder="Tetiana Melnyk" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Пароль (Дата народження)</label>
+                <input type="date" id="login-password" required>
+            </div>
+            <div class="modal-btn">
+                <a href="#dashboard">Скасувати</a>
+                <button type="submit" id="submit-login-btn" class="create-btn">Увійти</button>
+            </div>
+        </form>
+    </div></section>
 
 </body>
 </html>
